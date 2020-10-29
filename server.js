@@ -1,7 +1,8 @@
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
-const Exercise = require("./models/exercise");
+
+const { Workout } = require("./models");
 
 const PORT = process.env.PORT || 3000;
 
@@ -20,7 +21,18 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
   useCreateIndex: true,
 });
 
-
+// ===============================================================
+// retrieve all workouts
+app.get("/api/workouts",(req, res)=>
+{
+  Workout.find({}, function (err, results){
+    if(err){
+      res.send(error);
+    }else{
+      res.send(results);
+    }
+  })
+});
 
 // Start the server
 app.listen(PORT, () => {
