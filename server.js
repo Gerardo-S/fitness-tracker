@@ -34,14 +34,9 @@ app.get("/api/workouts", (req, res) => {
       res.json(err)
     });
 
-  // Workout.find({}, function (err, results) {
-  //   if (err) {
-  //     res.send(error);
-  //   } else {
-  //     res.send(results);
-  //   }
-  // })
 });
+
+
 
 app.get("/api/workouts/range", (req, res) => {
   Workout.find({})
@@ -51,61 +46,41 @@ app.get("/api/workouts/range", (req, res) => {
     .catch((err) => {
       res.json(err)
     });
+});
+//  Currently nothing updates in database, I will revisit this part ==========================================================
+app.put("/api/workouts/:id", ({ params, body }, res) => {
+  console.log(params);
+  Workout.findByIdAndUpdate(params.id, { $push: { exercises : body } }, { new: true })
+    .then((newWorkout) => {
+      console.log(body)
+      console.log(newWorkout)
+      console.log(params)
+      // newWorkout.exercises.push(body);s
+      res.json(newWorkout)
 
-  // Workout.find({}, function (err, results) {
-  //   if (err) {
-  //     res.send(error);
-  //   } else {
-  //     res.send(results);
-  //   }
-  // })
+
+
+    })
+    .catch((err) => {
+      console.log(err);
+
+    });
+
+});
+// =====================================================================================================================================
+app.post("/api/workouts", ({ body }, res) => {
+  Workout.create({})
+    .then(newWorkout => {
+      res.json(newWorkout);
+
+    })
+    .catch((err) => {
+      res.json(err)
+    });
+
 });
 
-// app.put("/exercise", (req, res) => {
-//   Workout.update({
-//     _id: mongojs.ObjectID(req.params.id)
-//   },
-//     {
-//       $set: {
-//         exerciseType: req.params.type,
-//         name: req.params.name,
-//         weight: req.params.weight,
-//         sets: req.params.sets,
-//         reps: req.params.reps,
-//         duration: req.params.duration
 
-//       }
-//     },
-//     (error, data) => {
-//       if (error) {
-//         res.send(error);
-//       } else {
-//         console.log(data);
-//         res.send(data);
-//       };
-//     }
-//   )
-// });
-
-// app.get("/exercise", (req, res) => {
-//   res.redirect("exercise.html");
-
-//   //   Workout.find({
-//   //   "exercises.type": { $in: ["cardio", "resistance"] }
-//   // }, 
-//   // function (err, results) {
-//   //   if (err) {
-//   //     res.send(err);
-//   //   } else {
-//   //     console.log(results)
-//   //     res.json(results);
-//   //   }
-//   // })
-
-
-// });
-
-// Start the server
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
 });
