@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
+require("./routes/html-routes.js")(app);
 // app.use(logger("dev"));
 
 app.use(express.urlencoded({ extended: true }));
@@ -25,14 +26,39 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
 // ===============================================================
 // retrieve all workouts
 app.get("/api/workouts", (req, res) => {
+  Workout.find({})
+    .then((results) => {
+      res.json(results);
+    })
+    .catch((err) => {
+      res.json(err)
+    });
 
-  Workout.find({}, function (err, results) {
-    if (err) {
-      res.send(error);
-    } else {
-      res.send(results);
-    }
-  })
+  // Workout.find({}, function (err, results) {
+  //   if (err) {
+  //     res.send(error);
+  //   } else {
+  //     res.send(results);
+  //   }
+  // })
+});
+
+app.get("/api/workouts/range", (req, res) => {
+  Workout.find({})
+    .then((results) => {
+      res.json(results);
+    })
+    .catch((err) => {
+      res.json(err)
+    });
+
+  // Workout.find({}, function (err, results) {
+  //   if (err) {
+  //     res.send(error);
+  //   } else {
+  //     res.send(results);
+  //   }
+  // })
 });
 
 // app.put("/exercise", (req, res) => {
@@ -61,23 +87,23 @@ app.get("/api/workouts", (req, res) => {
 //   )
 // });
 
-app.get("/exercise", (req, res) => {
-  res.redirect("exercise.html");
+// app.get("/exercise", (req, res) => {
+//   res.redirect("exercise.html");
 
-  //   Workout.find({
-  //   "exercises.type": { $in: ["cardio", "resistance"] }
-  // }, 
-  // function (err, results) {
-  //   if (err) {
-  //     res.send(err);
-  //   } else {
-  //     console.log(results)
-  //     res.json(results);
-  //   }
-  // })
+//   //   Workout.find({
+//   //   "exercises.type": { $in: ["cardio", "resistance"] }
+//   // }, 
+//   // function (err, results) {
+//   //   if (err) {
+//   //     res.send(err);
+//   //   } else {
+//   //     console.log(results)
+//   //     res.json(results);
+//   //   }
+//   // })
 
 
-});
+// });
 
 // Start the server
 app.listen(PORT, () => {
